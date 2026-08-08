@@ -2,9 +2,11 @@ import { FaUser, FaHeartPulse, FaHeart, FaMagnifyingGlass, FaUserPlus, FaUserGro
 import logo from '../../assets/logo.png';
 import heroBanner from "../../assets/hero_banner.png";
 import heroDrop from "../../assets/hero_banner_blood_drop.png";
+import { useNavigate } from "react-router";
 
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <header
       className="w-full bg-cover bg-top bg-no-repeat"
@@ -88,7 +90,9 @@ const Header = () => {
               Find Blood
               <FaMagnifyingGlass />
             </button>
-            <button className="flex items-center gap-2 border border-amber-300 hover:bg-amber-100 text-gray-800 font-semibold px-6 py-3 rounded-full transition-colors">
+            <button className="flex items-center gap-2 border border-amber-300 hover:bg-amber-100 text-gray-800 font-semibold px-6 py-3 rounded-full transition-colors"
+              onClick={() => navigate('/signup')}
+            >
               Become a Donor
               <FaUserPlus />
             </button>
