@@ -7,9 +7,10 @@ import Footer from '../Pages/Shared/Footer/Footer';
 const RootLayout = () => {
     return (
         <div>
-            <Navbar />
-            <Outlet />
-            <Footer />
+            <Navbar></Navbar>
+            <p>Hello</p>
+            <Outlet></Outlet>
+            <Footer></Footer>
         </div>
     );
 };

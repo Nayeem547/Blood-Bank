@@ -4,6 +4,7 @@ import heroBanner from "../../assets/hero_banner.png";
 import heroDrop from "../../assets/hero_banner_blood_drop.png";
 import { useNavigate } from "react-router";
 
+
 const Header = () => {
   const navigate = useNavigate();
   return (
