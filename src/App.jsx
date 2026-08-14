@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div>
-      <h1>I am N</h1>
+      <h1>I am </h1>
     </div>
   )
 }
