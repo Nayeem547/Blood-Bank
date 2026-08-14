@@ -8,7 +8,7 @@ import card6 from "../../../assets/card6.png";
 
 const Card = () => {
     return (
-       <div className='grid grid-cols-3  content-center justify-items-center gap-4 justify-center justify-self-center m-4'>
+       <div className='md:grid md:grid-cols-2 lg:grid-cols-3  content-center justify-items-center gap-4 justify-center justify-self-center m-4'>
          <div className="card w-96 bg-base-100 shadow-md m-2 h-64  bg-yellow-50 ">
   <div className="card-body relative ">
     <div className='   '>
