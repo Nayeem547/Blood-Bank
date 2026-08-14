@@ -207,7 +207,7 @@ const Footer = () => {
    <div className='w-38 gap-2 justify-start  flex  items-center hover:border-b-2 border-red-700 hover:shadow-lg hover:font-bold hover:text-red-700  '>
          <span className='text-[20px] text-red-700'> <MdMailOutline /> </span>
 
-    <button className=' flex  items-center content-center'>nayeenh543@gmail.com</button>
+    <button className=' flex  items-center content-center'>Lifeline@gmail.com</button>
     
     </div>
 

@@ -1,8 +1,11 @@
-
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../Layouts/RootLayout";
 import Home from "../Pages/Home/Home/Home";
-import SignUpPage from "../Pages/Signup/SignUpPage";
+import BecomeDonor from "../Component/BecomeDonor";
+import Login from "../Component/Login";
+import About from "../Component/About";
+import Contact from "../Component/Contact";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -13,9 +16,21 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "signup",
-        Component: SignUpPage,
+        path: "become-donor", 
+        Component: BecomeDonor, 
       },
-    ],
+      {
+        path: "login", 
+        Component: Login, 
+      },
+      {
+        path: "about", 
+        Component: About,
+      }, 
+      {
+        path: "Contact", 
+        Component: Contact,
+      }, 
+    ]
   },
 ]);
