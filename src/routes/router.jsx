@@ -5,8 +5,13 @@ import BecomeDonor from "../Component/BecomeDonor";
 import Login from "../Component/Login";
 import About from "../Component/About";
 import Contact from "../Component/Contact";
+import Donors from "../Component/Donors";
+import BloodStock from "../Component/BloodStock";
+import BloodRequests from "../Component/BloodRequests";
+import Blog from "../Component/Blog";
+import Profile from "../Component/Profile"; 
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter([ 
   {
     path: "/",
     Component: RootLayout,
@@ -14,6 +19,26 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "/blog",
+        element: <Blog />,
+      },
+       {
+        path: "Profile", 
+        Component: Profile,
+      },
+      {
+        path: "donors", 
+        Component: Donors,
+      },
+      {
+        path: "request", 
+        Component: BloodRequests,
+      }, 
+      {
+        path: "blood-stock", 
+        Component: BloodStock,
       },
       {
         path: "become-donor", 
@@ -28,9 +53,9 @@ export const router = createBrowserRouter([
         Component: About,
       }, 
       {
-        path: "Contact", 
-        Component: Contact,
-      }, 
+        path: "contact", 
+        Component: Contact, 
+      },
     ]
   },
 ]);

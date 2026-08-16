@@ -28,12 +28,13 @@ const BloodCompatibilityEligibility = () => {
   const isEligible = Object.values(eligibility).every(Boolean);
 
   return (
-    <section className="py-12 bg-white">
+    /* টপ-টু-বটম রেডিশ থেকে লাইট রেডিশ গ্রেডিয়েন্ট */
+    <section className="py-12 bg-gradient-to-b from-red-100/70 via-red-50/40 to-white border-y border-red-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <span className="bg-red-100 text-red-600 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-2">
+          <span className="bg-red-100 text-red-600 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-2 shadow-sm">
             <FaHeartPulse className="animate-pulse text-red-600" /> Know Your Blood Info
           </span>
           <h2 className="text-2xl sm:text-4xl font-bold text-gray-800">
@@ -47,7 +48,7 @@ const BloodCompatibilityEligibility = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           
           {/* 🩸 1. BLOOD COMPATIBILITY CHECKER */}
-          <div className="bg-amber-50/60 border border-amber-200/70 p-6 sm:p-8 rounded-2xl shadow-sm space-y-6">
+          <div className="bg-white/90 backdrop-blur-sm border border-red-200/60 p-6 sm:p-8 rounded-2xl shadow-sm space-y-6">
             <div className="flex items-center gap-3">
               <div className="bg-red-600 text-white p-3 rounded-xl shadow-sm">
                 <FaHandHoldingHeart className="text-xl" />
@@ -68,7 +69,7 @@ const BloodCompatibilityEligibility = () => {
                   <button
                     key={group}
                     onClick={() => setSelectedGroup(group)}
-                    className={`py-2 text-sm font-bold rounded-xl transition-all ${
+                    className={`py-2 text-sm font-bold rounded-xl transition-all cursor-pointer ${
                       selectedGroup === group
                         ? 'bg-red-600 text-white shadow-md scale-105'
                         : 'bg-white border border-gray-200 text-gray-700 hover:border-red-400'
@@ -83,7 +84,7 @@ const BloodCompatibilityEligibility = () => {
             {/* Results Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               {/* Can Give To */}
-              <div className="bg-white p-4 rounded-xl border border-amber-200/60 space-y-2">
+              <div className="bg-red-50/40 p-4 rounded-xl border border-red-100 space-y-2">
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block">
                   You Can Give Blood To
                 </span>
@@ -91,7 +92,7 @@ const BloodCompatibilityEligibility = () => {
                   {bloodData[selectedGroup].give.map((item, idx) => (
                     <span
                       key={idx}
-                      className="bg-red-50 text-red-700 text-xs font-bold px-2.5 py-1 rounded-md border border-red-200"
+                      className="bg-white text-red-700 text-xs font-bold px-2.5 py-1 rounded-md border border-red-200 shadow-2xs"
                     >
                       {item}
                     </span>
@@ -100,7 +101,7 @@ const BloodCompatibilityEligibility = () => {
               </div>
 
               {/* Can Receive From */}
-              <div className="bg-white p-4 rounded-xl border border-amber-200/60 space-y-2">
+              <div className="bg-red-50/40 p-4 rounded-xl border border-red-100 space-y-2">
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block">
                   You Can Receive From
                 </span>
@@ -108,7 +109,7 @@ const BloodCompatibilityEligibility = () => {
                   {bloodData[selectedGroup].receive.map((item, idx) => (
                     <span
                       key={idx}
-                      className="bg-green-50 text-green-700 text-xs font-bold px-2.5 py-1 rounded-md border border-green-200"
+                      className="bg-white text-green-700 text-xs font-bold px-2.5 py-1 rounded-md border border-green-200 shadow-2xs"
                     >
                       {item}
                     </span>
@@ -119,17 +120,17 @@ const BloodCompatibilityEligibility = () => {
           </div>
 
           {/* 📋 2. QUICK ELIGIBILITY CHECKER */}
-          <div className="bg-white border border-gray-100 p-6 sm:p-8 rounded-2xl shadow-sm space-y-6">
+          <div className="bg-white/90 backdrop-blur-sm border border-red-200/60 p-6 sm:p-8 rounded-2xl shadow-sm space-y-6">
             <div>
               <h3 className="text-lg font-bold text-gray-800">Quick Eligibility Check</h3>
-              <p className="text-xs text-gray-500">নিচের প্রশ্নগুলোর উত্তর দিয়ে রক্তদানের যোগ্যতা পরীক্ষা করুন</p>
+              <p className="text-xs text-gray-500">নিচের প্রশ্নগুলোর উত্তর দিয়ে রক্তদানের যোগ্যতা পরীক্ষা করুন</p>
             </div>
 
             <div className="space-y-3">
               {/* Question 1 */}
-              <label className="flex items-center justify-between p-3 border rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center justify-between p-3 border border-red-100 rounded-xl hover:bg-red-50/30 cursor-pointer transition-colors">
                 <span className="text-xs sm:text-sm text-gray-700 font-medium">
-                  আপনার বয়স কি ১৮ থেকে ৬৫ বছরের মধ্যে?
+                  আপনার বয়স কি ১৮ থেকে ৬৫ বছরের মধ্যে?
                 </span>
                 <input
                   type="checkbox"
@@ -140,7 +141,7 @@ const BloodCompatibilityEligibility = () => {
               </label>
 
               {/* Question 2 */}
-              <label className="flex items-center justify-between p-3 border rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center justify-between p-3 border border-red-100 rounded-xl hover:bg-red-50/30 cursor-pointer transition-colors">
                 <span className="text-xs sm:text-sm text-gray-700 font-medium">
                   আপনার শারীরিক ওজন কি অন্তত ৫০ কেজির বেশি?
                 </span>
@@ -153,9 +154,9 @@ const BloodCompatibilityEligibility = () => {
               </label>
 
               {/* Question 3 */}
-              <label className="flex items-center justify-between p-3 border rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center justify-between p-3 border border-red-100 rounded-xl hover:bg-red-50/30 cursor-pointer transition-colors">
                 <span className="text-xs sm:text-sm text-gray-700 font-medium">
-                  সর্বশেষ রক্তদানের পর ৩ মাস বা ১২ সপ্তাহ সময় পার হয়েছে?
+                  সর্বশেষ রক্তদানের পর ৩ মাস বা ১২ সপ্তাহ সময় পার হয়েছে?
                 </span>
                 <input
                   type="checkbox"
@@ -166,9 +167,9 @@ const BloodCompatibilityEligibility = () => {
               </label>
 
               {/* Question 4 */}
-              <label className="flex items-center justify-between p-3 border rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center justify-between p-3 border border-red-100 rounded-xl hover:bg-red-50/30 cursor-pointer transition-colors">
                 <span className="text-xs sm:text-sm text-gray-700 font-medium">
-                  আপনি কি কোনো দীর্ঘমেয়াদী সংক্রামক বা বড় রোগে মুক্ত?
+                  আপনি কি কোনো দীর্ঘমেয়াদী সংক্রামক বা বড় রোগে মুক্ত?
                 </span>
                 <input
                   type="checkbox"
@@ -192,7 +193,7 @@ const BloodCompatibilityEligibility = () => {
                   <FaCircleCheck className="text-2xl text-green-600 shrink-0" />
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold">অভিনন্দন! আপনি রক্তদানের জন্য সম্পূর্ণ যোগ্য।</h4>
-                    <p className="text-[11px] text-green-700">আজই একজন মুমূর্ষু রোগীর জীবন বাঁচাতে রক্তদান করতে এগিয়ে আসুন।</p>
+                    <p className="text-[11px] text-green-700">আজই একজন মুমূর্ষু রোগীর জীবন বাঁচাতে রক্তদান করতে এগিয়ে আসুন।</p>
                   </div>
                 </>
               ) : (
@@ -200,7 +201,7 @@ const BloodCompatibilityEligibility = () => {
                   <FaCircleXmark className="text-2xl text-amber-600 shrink-0" />
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold">সবগুলো ঘর টিক দিন</h4>
-                    <p className="text-[11px] text-amber-700">রক্তদানের জন্য সবগুলো প্রাথমিক শর্ত পূরণ হওয়া আবশ্যক।</p>
+                    <p className="text-[11px] text-amber-700">রক্তদানের জন্য সবগুলো প্রাথমিক শর্ত পূরণ হওয়া আবশ্যক।</p>
                   </div>
                 </>
               )}

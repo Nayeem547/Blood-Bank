@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
+import axios from 'axios';
 
 const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
+      alert(response.data.message);
+      // সফল হলে ড্যাশবোর্ড বা হোম পেজে রিডাইরেক্ট করতে পারো
+    } catch (error) {
+      alert(error.response?.data?.message || 'Login failed!');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 py-8">
       <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-md w-full max-w-md border">
@@ -15,7 +30,7 @@ const Login = () => {
         </p>
 
         {/* Form Start */}
-        <form className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-4">
           
           {/* Username Input */}
           <div>
@@ -24,6 +39,9 @@ const Login = () => {
             </label>
             <input
               type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
               placeholder="Enter your username"
               className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
             />
@@ -36,6 +54,9 @@ const Login = () => {
             </label>
             <input
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
               placeholder="••••••••"
               className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
             />

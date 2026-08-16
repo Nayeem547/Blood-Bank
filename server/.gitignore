@@ -1,0 +1,6 @@
+.env
+
+PORT=5000
+MONGO_URI=mongodb+srv://starahi_db_user:UieCEaBg33iXZjA6@lifeline.sm18xab.mongodb.net/bloodbank?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_jwt_key_here
+
