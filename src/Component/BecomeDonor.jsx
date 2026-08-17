@@ -1,23 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
-import logo from '../assets/logo.png'; 
+import axios from 'axios';
 
 const BecomeDonor = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+    phone: '',
+    bloodGroup: '',
+    gender: '',
+    dob: '',
+    lastDonationDate: '',
+    address: ''
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/donors/register', formData);
+      alert(response.data.message);
+      
+      setFormData({
+        firstName: '',
+        lastName: '',
+        username: '',
+        password: '',
+        phone: '',
+        bloodGroup: '',
+        gender: '',
+        dob: '',
+        lastDonationDate: '',
+        address: ''
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error.response?.data?.message || 'Registration failed!');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignin = () => {
+    console.log("Google Sign-in clicked");
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 py-8">
       <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-md w-full max-w-2xl border">
         
-        {/* Top Logo Section (Centered) */}
-        <div className="flex justify-center mb-4">
-          <Link to="/">
-            <img 
-              src={logo} 
-              alt="LifeLine Logo" 
-              className="h-9 sm:h-11 w-auto cursor-pointer" 
-            />
-          </Link>
-        </div>
-
         {/* Title Section */}
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-red-600 mb-1">
           Become a Donor
@@ -27,7 +67,7 @@ const BecomeDonor = () => {
         </p>
 
         {/* Form Start */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           
           {/* First Name & Last Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -37,6 +77,10 @@ const BecomeDonor = () => {
               </label>
               <input
                 type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
                 placeholder="First Name"
                 className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
               />
@@ -47,13 +91,17 @@ const BecomeDonor = () => {
               </label>
               <input
                 type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
                 placeholder="Last Name"
                 className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
               />
             </div>
           </div>
 
-          {/* Username & Phone Number */}
+          {/* Username & Password */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1">
@@ -61,20 +109,44 @@ const BecomeDonor = () => {
               </label>
               <input
                 type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
                 placeholder="Username"
                 className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
               />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1">
-                Phone Number
+                Password
               </label>
               <input
-                type="tel"
-                placeholder="Phone Number"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                placeholder="Password"
                 className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
               />
             </div>
+          </div>
+
+          {/* Phone Number */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              placeholder="Phone Number (e.g., 017xxxxxxxx)"
+              className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
+            />
           </div>
 
           {/* Blood Group & Gender */}
@@ -83,7 +155,13 @@ const BecomeDonor = () => {
               <label className="block text-xs font-semibold text-gray-600 mb-1">
                 Blood Group
               </label>
-              <select className="w-full border p-2.5 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-red-500 bg-white">
+              <select 
+                name="bloodGroup"
+                value={formData.bloodGroup}
+                onChange={handleChange}
+                required
+                className="w-full border p-2.5 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-red-500 bg-white"
+              >
                 <option value="">Select Blood Group</option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
@@ -99,7 +177,13 @@ const BecomeDonor = () => {
               <label className="block text-xs font-semibold text-gray-600 mb-1">
                 Gender
               </label>
-              <select className="w-full border p-2.5 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-red-500 bg-white">
+              <select 
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                required
+                className="w-full border p-2.5 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-red-500 bg-white"
+              >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -116,15 +200,22 @@ const BecomeDonor = () => {
               </label>
               <input
                 type="date"
+                name="dob"
+                value={formData.dob}
+                onChange={handleChange}
+                required
                 className="w-full border p-2.5 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-red-500"
               />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1">
-                Last Donation Date
+                Last Donation Date <span className="text-gray-400 font-normal">(Optional)</span>
               </label>
               <input
                 type="date"
+                name="lastDonationDate"
+                value={formData.lastDonationDate}
+                onChange={handleChange}
                 className="w-full border p-2.5 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-red-500"
               />
             </div>
@@ -133,11 +224,15 @@ const BecomeDonor = () => {
           {/* Address */}
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1">
-              Address
+              Address (District / Thana / Area)
             </label>
             <input
               type="text"
-              placeholder="Your Area / City"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+              placeholder="Your District / Thana / Area"
               className="w-full border p-2.5 rounded-lg text-sm focus:outline-none focus:border-red-500"
             />
           </div>
@@ -145,9 +240,10 @@ const BecomeDonor = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-red-600 text-white font-semibold py-2.5 rounded-lg mt-2 hover:bg-red-700 transition-colors"
+            disabled={loading}
+            className="w-full bg-red-600 text-white font-semibold py-2.5 rounded-lg mt-2 hover:bg-red-700 transition-colors cursor-pointer disabled:opacity-70"
           >
-            Register as Donor
+            {loading ? "Registering..." : "Register as Donor"}
           </button>
         </form>
 
@@ -160,7 +256,8 @@ const BecomeDonor = () => {
         {/* Google Sign In Button */}
         <button
           type="button"
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700"
+          onClick={handleGoogleSignin}
+          className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 cursor-pointer"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
