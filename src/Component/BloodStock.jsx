@@ -1,25 +1,52 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { FaTint, FaExclamationTriangle, FaCheckCircle, FaSearch, FaThLarge, FaTable } from 'react-icons/fa';
 
 const BloodStock = () => {
+
+  
   // ডেমো স্টক ডাটা
-  const [bloodStock] = useState([
-    { id: 1, group: 'A+', bags: 14, status: 'Available' },
-    { id: 2, group: 'A-', bags: 3, status: 'Low Stock' },
-    { id: 3, group: 'B+', bags: 18, status: 'Available' },
-    { id: 4, group: 'B-', bags: 2, status: 'Critical' },
-    { id: 5, group: 'AB+', bags: 8, status: 'Available' },
-    { id: 6, group: 'AB-', bags: 1, status: 'Critical' },
-    { id: 7, group: 'O+', bags: 22, status: 'Available' },
-    { id: 8, group: 'O-', bags: 4, status: 'Low Stock' },
-  ]);
+  // const [bloodStock] = useState([
+  //   { id: 1, group: 'A+', bags: 14, status: 'Available' },
+  //   { id: 2, group: 'A-', bags: 3, status: 'Low Stock' },
+  //   { id: 3, group: 'B+', bags: 18, status: 'Available' },
+  //   { id: 4, group: 'B-', bags: 2, status: 'Critical' },
+  //   { id: 5, group: 'AB+', bags: 8, status: 'Available' },
+  //   { id: 6, group: 'AB-', bags: 1, status: 'Critical' },
+  //   { id: 7, group: 'O+', bags: 22, status: 'Available' },
+  //   { id: 8, group: 'O-', bags: 4, status: 'Low Stock' },
+  // ]);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' অথবা 'table' ভিউ টগল করার জন্য
+  const [bloodStock, setBloodStock] = useState([]);
 
-  // সার্চ ফিল্টার লজিক
-  const filteredStock = bloodStock.filter(item =>
-    item.group.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    fetch("http://localhost:3000/blood_stock")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch blood stock");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setBloodStock(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  // const [searchTerm, setSearchTerm] = useState('');
+  // const [viewMode, setViewMode] = useState('grid'); // 'grid' অথবা 'table' ভিউ টগল করার জন্য
+
+  // // সার্চ ফিল্টার লজিক
+  // const filteredStock = bloodStock.filter(item =>
+  //   item.group.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+   const [searchTerm, setSearchTerm] = useState('');
+  const [viewMode, setViewMode] = useState('grid');
+
+  const filteredStock = bloodStock.filter((item) =>
+    item.blood_group.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -94,11 +121,11 @@ const BloodStock = () => {
         {viewMode === 'grid' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredStock.map((item) => {
-              const isLow = item.bags < 5;
+              const isLow = item.quantity < 5;
 
               return (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className={`bg-white rounded-2xl p-5 shadow-sm border transition-all hover:shadow-md flex flex-col justify-between ${
                     isLow ? 'border-red-300 bg-red-50/25' : 'border-gray-200'
                   }`}
@@ -106,7 +133,7 @@ const BloodStock = () => {
                   <div>
                     <div className="flex justify-between items-start mb-3">
                       <span className="text-2xl sm:text-3xl font-extrabold text-red-600 bg-red-50 px-3 py-1 rounded-xl">
-                        {item.group}
+                        {item.blood_group}
                       </span>
                       
                       {/* স্টক স্ট্যাটাস ব্যাজ ও ওয়ার্নিং */}
@@ -126,7 +153,7 @@ const BloodStock = () => {
                         Available Quantity
                       </p>
                       <p className="text-2xl font-bold text-gray-800 mt-0.5">
-                        {item.bags} <span className="text-sm font-normal text-gray-500">Bags</span>
+                        {item.quantity} <span className="text-sm font-normal text-gray-500">Bags</span>
                       </p>
                     </div>
                   </div>
@@ -134,7 +161,7 @@ const BloodStock = () => {
                   <div className="mt-5 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
                     <span>Status:</span>
                     <span className={`font-semibold ${isLow ? 'text-red-600' : 'text-green-600'}`}>
-                      {item.bags === 0 ? 'Out of Stock' : isLow ? 'Urgent Needed' : 'Good Condition'}
+                      {item.quantity === 0 ? 'Out of Stock' : isLow ? 'Urgent Needed' : 'Good Condition'}
                     </span>
                   </div>
                 </div>
@@ -158,17 +185,17 @@ const BloodStock = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-200 text-sm">
                   {filteredStock.map((item) => {
-                    const isLow = item.bags < 5;
+                    const isLow = item.quantity < 5;
 
                     return (
-                      <tr key={item.id} className={`hover:bg-gray-50/50 ${isLow ? 'bg-red-50/20' : ''}`}>
+                      <tr key={item._id} className={`hover:bg-gray-50/50 ${isLow ? 'bg-red-50/20' : ''}`}>
                         <td className="py-3 px-4 sm:px-6">
                           <span className="font-extrabold text-red-600 bg-red-50 px-2.5 py-1 rounded-lg">
-                            {item.group}
+                            {item.blood_group}
                           </span>
                         </td>
                         <td className="py-3 px-4 sm:px-6 font-bold text-gray-800">
-                          {item.bags} <span className="text-xs font-normal text-gray-500">Bags</span>
+                          {item.quantity} <span className="text-xs font-normal text-gray-500">Bags</span>
                         </td>
                         <td className="py-3 px-4 sm:px-6">
                           {isLow ? (
@@ -183,7 +210,7 @@ const BloodStock = () => {
                         </td>
                         <td className="py-3 px-4 sm:px-6">
                           <span className={`font-semibold text-xs ${isLow ? 'text-red-600' : 'text-green-600'}`}>
-                            {item.bags === 0 ? 'Out of Stock' : isLow ? 'Urgent Needed' : 'Good Condition'}
+                            {item.quantity === 0 ? 'Out of Stock' : isLow ? 'Urgent Needed' : 'Good Condition'}
                           </span>
                         </td>
                       </tr>

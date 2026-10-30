@@ -1,63 +1,140 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { FaHospital, FaClock, FaPlus, FaNotesMedical, FaTimes, FaPhone, FaMapMarkerAlt, FaUser } from 'react-icons/fa';
 
 const BloodRequests = () => {
-  const [requests, setRequests] = useState([
-    { 
-      id: 1, 
-      patientName: "Md. Karim", 
-      bloodGroup: "O+", 
-      hospital: "CMH Hospital, Dhaka", 
-      bags: 2, 
-      phone: "+8801811223344",
-      time: "2 hours ago", 
-      urgency: "High" 
-    },
-    { 
-      id: 2, 
-      patientName: "Sara Ahmed", 
-      bloodGroup: "B-", 
-      hospital: "City Medical, Chattogram", 
-      bags: 1, 
-      phone: "+8801922334455",
-      time: "5 hours ago", 
-      urgency: "Medium" 
-    },
-    { 
-      id: 3, 
-      patientName: "Jashim Uddin", 
-      bloodGroup: "AB+", 
-      hospital: "General Hospital, Sylhet", 
-      bags: 3, 
-      phone: "+8801733445566",
-      time: "1 day ago", 
-      urgency: "High" 
-    },
-  ]);
 
+  
+
+  const API = "http://localhost:3000/blood_requests";
+
+  const [requests, setRequests] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // নতুন রিকোয়েস্ট ফর্ম স্টেট
   const [newRequest, setNewRequest] = useState({
     patientName: "",
-    bloodGroup: "A+",
+    bloodGroup: "",
     hospital: "",
-    bags: 1,
+    bags: "",
     phone: "",
-    urgency: "High"
+    urgency: ""
   });
 
-  const handleSubmit = (e) => {
+  
+  useEffect(() => {
+    fetch(API)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch requests");
+        return res.json();
+      })
+      .then((data) => setRequests(data))
+      .catch((err) => console.error("Fetch error:", err));
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const reqObj = {
-      id: Date.now(),
-      ...newRequest,
-      time: "Just now"
-    };
-    setRequests([reqObj, ...requests]);
-    setIsModalOpen(false);
-    setNewRequest({ patientName: "", bloodGroup: "A+", hospital: "", bags: 1, phone: "", urgency: "High" });
+
+    try {
+      const res = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ...newRequest,
+          bags: Number(newRequest.bags),
+          createdAt: new Date()
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to save request");
+      }
+
+      const savedRequest = await res.json();
+
+      setRequests((prev) => [
+        {
+          ...newRequest,
+          bags: Number(newRequest.bags),
+          _id: savedRequest.insertedId,
+          createdAt: new Date()
+        },
+        ...prev
+      ]);
+
+      setIsModalOpen(false);
+
+      setNewRequest({
+        patientName: "",
+        bloodGroup: "A+",
+        hospital: "",
+        bags: 1,
+        phone: "",
+        urgency: "High"
+      });
+    } catch (err) {
+      console.error("Submit error:", err);
+      alert("Request save failed. Please try again.");
+    }
   };
+
+
+  // const [requests, setRequests] = useState([
+  //   { 
+  //     id: 1, 
+  //     patientName: "Md. Karim", 
+  //     bloodGroup: "O+", 
+  //     hospital: "CMH Hospital, Dhaka", 
+  //     bags: 2, 
+  //     phone: "+8801811223344",
+  //     time: "2 hours ago", 
+  //     urgency: "High" 
+  //   },
+  //   { 
+  //     id: 2, 
+  //     patientName: "Sara Ahmed", 
+  //     bloodGroup: "B-", 
+  //     hospital: "City Medical, Chattogram", 
+  //     bags: 1, 
+  //     phone: "+8801922334455",
+  //     time: "5 hours ago", 
+  //     urgency: "Medium" 
+  //   },
+  //   { 
+  //     id: 3, 
+  //     patientName: "Jashim Uddin", 
+  //     bloodGroup: "AB+", 
+  //     hospital: "General Hospital, Sylhet", 
+  //     bags: 3, 
+  //     phone: "+8801733445566",
+  //     time: "1 day ago", 
+  //     urgency: "High" 
+  //   },
+  // ]);
+
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // // নতুন রিকোয়েস্ট ফর্ম স্টেট
+  // const [newRequest, setNewRequest] = useState({
+  //   patientName: "",
+  //   bloodGroup: "A+",
+  //   hospital: "",
+  //   bags: 1,
+  //   phone: "",
+  //   urgency: "High"
+  // });
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const reqObj = {
+  //     id: Date.now(),
+  //     ...newRequest,
+  //     time: "Just now"
+  //   };
+  //   setRequests([reqObj, ...requests]);
+  //   setIsModalOpen(false);
+  //   setNewRequest({ patientName: "", bloodGroup: "A+", hospital: "", bags: 1, phone: "", urgency: "High" });
+  // };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
@@ -82,7 +159,7 @@ const BloodRequests = () => {
       {/* রিকোয়েস্ট গ্রিড */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {requests.map((req) => (
-          <div key={req.id} className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-100 flex flex-col justify-between">
+          <div key={req._id} className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-100 flex flex-col justify-between">
             <div>
               {/* কার্ড হেডার: আইকন + নাম + আর্জেন্টিন্যাস ব্যাজ */}
               <div className="flex justify-between items-start mb-4">
@@ -93,7 +170,10 @@ const BloodRequests = () => {
                   <div>
                     <h3 className="font-bold text-lg text-gray-800">{req.patientName}</h3>
                     <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                      <FaClock className="text-gray-400" /> {req.time}
+                      <FaClock className="text-gray-400" /> 
+                      {req.createdAt
+                      ? new Date(req.createdAt).toLocaleString()
+                      : "Recently"}
                     </p>
                   </div>
                 </div>
