@@ -1,2 +1,30 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+
+
+.card-slider {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+}
+.card-slider::-webkit-scrollbar {
+  display: none;
+}
+.card-slider.dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+@keyframes card-marquee {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.card-marquee-track {
+  animation: card-marquee 50s linear infinite;
+}
+
+.card-marquee-track:hover {
+  animation-play-state: paused;
+}
